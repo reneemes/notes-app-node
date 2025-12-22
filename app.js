@@ -42,6 +42,14 @@ yargs(hideBin(process.argv))
   })
 
   .command({
+    command: 'remove-all',
+    describe: 'Remove all notes',
+    handler: (argv) => {
+      notes.removeAll(argv.confirm);
+    }
+  })
+
+  .command({
     command: 'list',
     describe: 'List your notes',
     handler: () => {
@@ -61,6 +69,26 @@ yargs(hideBin(process.argv))
     },
     handler: (argv) => {
       notes.readNote(argv.title);
+    }
+  })
+
+  .command({
+    command: 'edit',
+    describe: 'Edit a note',
+    builder: {
+      title: {
+        describe: 'Note title',
+        demandOption: true,
+        type: 'string'
+      },
+      body: {
+        describe: 'Note body',
+        demandOption: true,
+        type: 'string'
+      }
+    },
+    handler: (argv) => {
+      notes.editNote(argv.title, argv.body);
     }
   })
 

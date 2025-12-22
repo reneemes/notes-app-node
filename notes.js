@@ -36,9 +36,15 @@ const removeNote = (title) => {
   saveNotes(notesToKeep);
 };
 
+const removeAll = () => {
+  saveNotes([]);
+  console.log(chalk.red.inverse('All Notes Deleted'));
+  console.log(`Note count: ${loadNotes().length}`);
+};
+
 const listNotes = () => {
   const notes = loadNotes();
-  console.log(chalk.inverse('Your notes:'))
+  console.log(chalk.inverse('Your notes:'));
   notes.forEach(note => {
     console.log(chalk.cyan(note.title));
   })
@@ -51,6 +57,19 @@ const readNote = (title) => {
   if (note) {
     console.log(chalk.inverse(note.title));
     console.log(note.body);
+  } else {
+    console.log(chalk.red.inverse('Note not found'));
+  }
+};
+
+const editNote = (title, body) => {
+  const notes = loadNotes();
+  const note = notes.find(note => note.title === title);
+
+  if (note) {
+    note.body = body;
+    saveNotes(notes);
+    console.log(chalk.green.inverse('Note Updated'));
   } else {
     console.log(chalk.red.inverse('Note not found'));
   }
@@ -75,6 +94,8 @@ module.exports = {
   getNotes: getNotes,
   addNote: addNote,
   removeNote: removeNote,
+  removeAll: removeAll,
   listNotes: listNotes,
-  readNote: readNote
+  readNote: readNote,
+  editNote: editNote
 };
